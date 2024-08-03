@@ -16,7 +16,7 @@ def get_recommendation():
     image = data['image']
     
     # Write image to file system for debugging purposes.
-    file = open('mostRecepnt.png', 'wb') 
+    file = open('mostRecent.png', 'wb') 
     file.write(base64.b64decode((image))) 
     file.close() 
 
