@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 venv
+=======
+venv/
+crackinggeoguessr_ds/
+>>>>>>> 71d988d (Updated script to preprocess dataset)
