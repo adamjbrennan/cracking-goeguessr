@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "GeoGuessr Cracker",
+    "name": "Crack GeoGuessr",
     "version": "1.0",
     "permissions": [
       "activeTab"
