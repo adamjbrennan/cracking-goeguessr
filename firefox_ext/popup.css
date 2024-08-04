@@ -1,0 +1,66 @@
+body {
+    width: 600px;
+    height: 450px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('assets/background.avif');
+    background-size: cover;
+    background-position: center;
+    color: white;
+  }
+
+  #capture-button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  #recommendation {
+    font-weight: bold;
+  }
+  
+  #recommendationText {
+    font-weight: normal;
+  }
+
+  #capture-button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;    
+    opacity: 0.7;        
+  }
+
+  #capture-button:hover:enabled {
+    background-color: #3e8e41;
+  }
+
+  #log {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+  }
+
+  #embedded-map-frame {
+    width: 600px;
+    height: 450px;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: box-shadow 0.3s ease;
+  }
+
+  #embedded-map-frame:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }

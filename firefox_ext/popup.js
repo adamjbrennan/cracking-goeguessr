@@ -3,6 +3,7 @@ let mapsEmbedEndpoint = "https://www.google.com/maps/embed/v1/place";
 let crackingGeoGuessrApi = 'http://127.0.0.1:5000'
 let crackingGeoGuessrApiEndpoint =  `${crackingGeoGuessrApi}/cracking-geoguessr/get-recommendation`;
 
+console.log(mapsEmbedApiKey);
 
 document.addEventListener("DOMContentLoaded", function() {
   const captureButton = document.getElementById('capture-button');
@@ -10,7 +11,8 @@ document.addEventListener("DOMContentLoaded", function() {
   const recommendationT = document.getElementById('recommendationText')
   
   captureButton.addEventListener("click", function() {
-    chrome.tabs.captureVisibleTab(function(screenshotDataUrl) {
+    browser.tabs.captureVisibleTab(function(screenshotDataUrl) {
+      console.log(screenshotDataUrl);
       captureButton.disabled = true;
       captureButton.textContent = 'Cracking GeoGuessr...';
       recommendationP.style.display = 'none';
