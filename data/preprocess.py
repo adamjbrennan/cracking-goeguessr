@@ -4,7 +4,9 @@ from pathlib import Path
 from datasets import load_dataset
 
 DATASET_DIR = Path('crackinggeoguessr_ds')
+DATASET_DIR.mkdir(exist_ok=True)
 IMAGE_DIR = DATASET_DIR / 'images'
+IMAGE_DIR.mkdir(exist_ok=True)
 TRAIN_JSON_FILE = DATASET_DIR / 'train_crackinggeoguessr_finetune_data.json'
 TEST_JSON_FILE = DATASET_DIR / 'test_crackinggeoguessr_finetune_data.json'
 
@@ -29,26 +31,25 @@ def load_dataset_2():
 	return dataset
 
 def main():
+	print('loading dataset 1')
 	ds1 = load_dataset_1().shuffle(seed=31)
+	print('loading dataset 2')
 	ds2 = load_dataset_2().shuffle(seed=31)
+
+	print('Starting preprocess now...')
 
 	ds1_split = int(len(ds1) * .8)
 	ds2_split = int(len(ds2) * .8)
-	ds1_train = ds1[:ds1_split]
-	ds1_test = ds1[ds1_split:]
-	ds2_train = ds2[:ds2_split]
-	ds2_test = ds2[ds2_split:]
 
 	train_entries = list()
 	test_entries = list()
 
-	next_id = 0
 	def write_image_and_add_to_json(entries, image, label):
-		nonlocal next_id
-		image_save_path = str(IMAGE_DIR / f'image_{next_id}.png')
-		image.save(str(image_save_path))
-		json_entry = json.dumps({
-			'id': f'{next_id}',
+		id = len(entries)
+		image_save_path = (IMAGE_DIR / f'image_{id}.png').as_posix()
+		#image.save(str(image_save_path))
+		entry = {
+			'id': f'{id}',
 			'image': image_save_path,
 			"conversations": [
 				{
@@ -60,33 +61,36 @@ def main():
 					'content': f'{label}'
 				}
 			]
-		})
-		entries.append(json_entry)
-		next_id += 1
+		}
+		entries.append(entry)
 
-	for example in ds1_train:
-		img = example['image']
-		city, country = parse_city_and_country_from_prompt(example['prompt'])
+	next_train_id = 0
+	next_test_id = 0
+
+	for example in ds1['prompt']:
+		#img = example['image']
+		city, country = parse_city_and_country_from_prompt(example)
 		label = f'{city}, {country}'
-		write_image_and_add_to_json(train_entries, img, label)
+		print(label)
+		if next_train_id < ds1_split:
+			write_image_and_add_to_json(train_entries, None, label)
+			next_train_id += 1
+		else:
+			write_image_and_add_to_json(test_entries, None, label)
+			next_test_id += 1
 
-	for example in ds1_test:
-		img = example['image']
-		city, country = parse_city_and_country_from_prompt(example['prompt'])
-		label = f'{city}, {country}'
-		write_image_and_add_to_json(test_entries, img, label)
+	for example in ds2['address']:
+		#img = example['image']
+		label = example
+		print(label)
+		if (next_train_id - ds1_split) < ds2_split:
+			write_image_and_add_to_json(train_entries, None, label)
+			next_train_id += 1
+		else:
+			write_image_and_add_to_json(test_entries, None, label)
+			next_test_id += 1
 
-	for example in ds2_train:
-		img = example['image']
-		label = example['address']
-		write_image_and_add_to_json(train_entries, img, label)
-
-	for example in ds2_test:
-		img = example['image']
-		label = example['address']
-		write_image_and_add_to_json(test_entries, img, label)
-
-	TRAIN_JSON_FILE.write_text(json.dumps(train_entries))
-	TEST_JSON_FILE.write_text(json.dumps(test_entries))
+	TRAIN_JSON_FILE.write_text(json.dumps(train_entries, indent=4))
+	TEST_JSON_FILE.write_text(json.dumps(test_entries, indent=4))
 
 main()
