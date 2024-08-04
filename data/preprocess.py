@@ -20,28 +20,24 @@ def parse_city_and_country_from_prompt(prompt):
 	country = rest.split(')')[0]
 	return city, country
 
-def load_dataset_1_train():
-	ds = load_dataset("louistichelman/streetview", split='train[:80%]')
-	return ds
-
-def load_dataset_1_test():
-	ds = load_dataset("louistichelman/streetview", split='train[80%:]')
-	return ds
-
-def load_dataset_2_train():
-	dataset = load_dataset('stochastic/random_streetview_images_pano_v0.0.2', split='train[:80%]')
+def load_dataset_1():
+	dataset = load_dataset("louistichelman/streetview", split='train')
 	return dataset
 
-def load_dataset_2_test():
-	dataset = load_dataset('stochastic/random_streetview_images_pano_v0.0.2', split='train[80%:]')
+def load_dataset_2():
+	dataset = load_dataset('stochastic/random_streetview_images_pano_v0.0.2', split='train')
 	return dataset
 
 def main():
-	ds1_train = load_dataset_1_train()
-	ds1_test = load_dataset_1_test()
+	ds1 = load_dataset_1().shuffle(seed=31)
+	ds2 = load_dataset_2().shuffle(seed=31)
 
-	ds2_train = load_dataset_2_train()
-	ds2_test = load_dataset_2_test()
+	ds1_split = int(len(ds1) * .8)
+	ds2_split = int(len(ds2) * .8)
+	ds1_train = ds1[:ds1_split]
+	ds1_test = ds1[ds1_split:]
+	ds2_train = ds2[:ds2_split]
+	ds2_test = ds2[ds2_split:]
 
 	train_entries = list()
 	test_entries = list()
