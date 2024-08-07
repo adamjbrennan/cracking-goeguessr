@@ -46,6 +46,8 @@ def get_recommendation():
         temperature=0.7,
     )
 
+    print(res)
+
     return res
 
 if __name__ == '__main__':

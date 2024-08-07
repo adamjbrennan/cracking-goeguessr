@@ -1,4 +1,4 @@
-let mapsEmbedApiKey = "";
+let mapsEmbedApiKey = "AIzaSyCZwWelCX40BErYG34NLnUEeL2jOYEJyWo";
 let mapsEmbedEndpoint = "https://www.google.com/maps/embed/v1/place";
 let crackingGeoGuessrApi = 'http://127.0.0.1:5000'
 let crackingGeoGuessrApiEndpoint =  `${crackingGeoGuessrApi}/cracking-geoguessr/get-recommendation`;
